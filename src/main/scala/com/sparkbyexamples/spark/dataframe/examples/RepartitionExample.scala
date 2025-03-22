@@ -10,13 +10,13 @@ object RepartitionExample extends App {
 //    .config("spark.default.parallelism", "500")
     .getOrCreate()
 
- // spark.sqlContext.setConf("spark.default.parallelism", "500")
-  //spark.conf.set("spark.default.parallelism", "500")
+  spark.sqlContext.setConf("spark.default.parallelism", "500")
+  spark.conf.set("spark.default.parallelism", "500")
   val df = spark.range(0,20)
  df.printSchema()
   println(df.rdd.partitions.length)
 
-  df.write.mode(SaveMode.Overwrite)csv("c:/tmp/df-partition.csv")
+//  df.write.mode(SaveMode.Overwrite)csv("c:/tmp/df-partition.csv")
 
   val df2 = df.repartition(10)
 

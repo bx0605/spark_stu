@@ -1,17 +1,15 @@
-package com.sparkbyexamples.spark.spark30
+package com.sparkbyexamples.spark.study.dataframe
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object ADQExample extends App{
-
-  val spark: SparkSession = SparkSession.builder()
-    .master("local[5]")
+object ShuffleExample extends App {
+  val spark:SparkSession = SparkSession.builder()
+    .master("local[1]")
     .appName("SparkByExamples.com")
     .getOrCreate()
 
-  spark.sparkContext.setLogLevel("ERROR")
-
   import spark.implicits._
+
   val simpleData = Seq(("James","Sales","NY",90000,34,10000),
     ("Michael","Sales","NY",86000,56,20000),
     ("Robert","Sales","CA",81000,30,23000),
@@ -23,14 +21,7 @@ object ADQExample extends App{
     ("Kumar","Marketing","NY",91000,50,21000)
   )
   val df = simpleData.toDF("employee_name","department","state","salary","age","bonus")
-
-  val df1=df.groupBy("department").count()
-  println(df1.rdd.getNumPartitions)
-
-  spark.conf.set("spark.sql.adaptive.enabled",value = true)
-  val df2=df.groupBy("department").count()
-  println(df2.rdd.getNumPartitions)
-
-
-
+  private val frame: DataFrame = df.groupBy("state").count()
+  frame.show(false)
+  println(frame.repartition(10).rdd.getNumPartitions)
 }

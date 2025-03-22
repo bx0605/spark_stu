@@ -1,10 +1,9 @@
-package com.sparkbyexamples.spark.dataframe.functions.aggregate
+package com.sparkbyexamples.spark.study.dataframe.aggrate
 
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions._
+import org.apache.spark.sql.functions.{avg, collect_list, collect_set, first, last, max, mean, min}
 
-object DistinctCount extends App {
-
+object AggregateFunctions extends App {
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
     .appName("SparkByExamples.com")
@@ -26,14 +25,13 @@ object DistinctCount extends App {
     ("Saif", "Sales", 4100)
   )
   val df = simpleData.toDF("employee_name", "department", "salary")
-  df.show()
 
-  println("Distinct Count: " + df.distinct().count())
-
-  val df2 = df.select(countDistinct("department", "salary"))
-  val df3 = df.selectExpr("count(distinct department,salary)")
-  df2.show(false)
-  df3.show(false)
-  println("Distinct Count of Department & Salary: "+df2.collect()(0)(0))
-
+  df.select(avg("salary")).show(false)
+  df.select(collect_list("salary")).show(false)
+  df.select(collect_set("salary")).show(false)
+  df.select(first("salary")).show(false)
+  df.select(last("salary")).show(false)
+  df.select(max("salary")).show(false)
+  df.select(min("salary")).show(false)
+  df.select(mean("salary")).show(false)
 }

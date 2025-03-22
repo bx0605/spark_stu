@@ -1,10 +1,8 @@
-package com.sparkbyexamples.spark.dataframe.functions.aggregate
+package com.sparkbyexamples.spark.study.dataframe.aggrate
 
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
-object DistinctCount extends App {
-
+object SQLDistinct extends App {
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
     .appName("SparkByExamples.com")
@@ -26,14 +24,11 @@ object DistinctCount extends App {
     ("Saif", "Sales", 4100)
   )
   val df = simpleData.toDF("employee_name", "department", "salary")
-  df.show()
-
-  println("Distinct Count: " + df.distinct().count())
-
-  val df2 = df.select(countDistinct("department", "salary"))
-  val df3 = df.selectExpr("count(distinct department,salary)")
-  df2.show(false)
-  df3.show(false)
-  println("Distinct Count of Department & Salary: "+df2.collect()(0)(0))
-
+  df.show(false)
+  private val value: Dataset[Row] = df.distinct()
+value.show(false)
+  private val value1: Dataset[Row] = df.dropDuplicates()
+  value1.show(false)
+  private val value2: Dataset[Row] = df.dropDuplicates("department", "salary")
+  value2.show(false)
 }
